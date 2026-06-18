@@ -1,0 +1,111 @@
+Standalone Local LLM Workspace - Features and User Guide
+
+Overview
+--------
+The Standalone Local LLM Workspace is a complete local application for interacting with code repositories using local LLMs. It is designed to work independently of any single LLM vendor and includes a pluggable adapter layer so it can connect to multiple local model backends.
+
+Key Features
+------------
+1. Local LLM Connector
+   - Abstract interface for any local LLM backend.
+   - Supports multiple adapters, including a generic REST adapter and an Ollama-compatible adapter.
+   - Handles chat, embeddings, health checks, and model listing.
+
+2. Chat and Intent Management
+   - Multi-turn chat interface for general questions.
+   - Intent options include Chat, Review, Modify, and Build.
+   - Chat orchestrator builds prompts and routes tasks through the connector.
+
+3. Workspace Mapping and Repository Scanning
+   - Automatically scans workspace/modules/ for repositories.
+   - Detects project metadata such as language and package type.
+   - Summarizes repository structure, documentation, test files, and build files.
+
+4. Code Review
+   - AI-powered code review module.
+   - Provides structured feedback on quality, performance, security, and best practices.
+
+5. Safe Patch and Modification Framework
+   - Placeholder support for safe patch creation and approval.
+   - Designed for future extension with patch review and application.
+
+6. Build and Test Execution Framework
+   - API endpoints exist for running tests and builds.
+   - Designed as a framework for local execution and reporting.
+
+7. Local Memory Management
+   - Stores sessions and chat history locally under workspace/memory/.
+   - Supports saving, loading, listing, and deleting session files.
+   - Builds simple session summaries for reusable memory.
+
+8. User-Friendly Frontend
+   - React-based UI with a chat panel, repository sidebar, and status indicators.
+   - Displays LLM connection status, repository details, and active model information.
+   - Supports workspace scanning and conversational interactions.
+
+9. Startup and Environment Setup
+   - run.sh handles dependency installation, environment preparation, and service startup.
+   - Supports backend and frontend startup with progress messages.
+   - Includes .env configuration for local settings.
+
+10. Documentation and Guides
+    - README.md, QUICKSTART.md, BUILD.md, CONFIGURATION.md, INTEGRATION.md, ROADMAP.md, and MANIFEST.md are included.
+
+How to Use the Application
+--------------------------
+1. Prepare the Workspace
+   - Place the repositories or projects you want the application to analyze into the `workspace/modules/` directory.
+   - Example:
+     `cp -r ~/my-project /workspaces/AI-Project/workspace/modules/my-project`
+
+2. Configure Local LLM Settings
+   - Edit `.env` in the project root to set the adapter, endpoint, and model.
+   - Example for Ollama:
+     `LLM_ADAPTER=ollama`
+     `LLM_ENDPOINT=http://localhost:11434`
+     `LLM_MODEL=mistral`
+
+3. Start the Application
+   - Make the startup script executable if needed:
+     `chmod +x run.sh`
+   - Run the startup script:
+     `./run.sh`
+   - The script installs dependencies, prepares workspace folders, and starts backend and frontend services.
+
+4. Open the Interface
+   - Frontend UI: `http://localhost:3000`
+   - Backend API: `http://localhost:8000`
+   - API documentation: `http://localhost:8000/docs`
+
+5. Scan the Workspace
+   - Use the frontend button to scan the workspace.
+   - The application discovers repositories and displays them in the sidebar.
+
+6. Select a Repository
+   - Click a repository in the left sidebar to view details.
+   - Repository details may include name, language, project type, and sample file list.
+
+7. Start Chatting
+   - Enter a message in the chat input.
+   - Choose the desired intent: Chat, Review, Modify, or Build.
+   - Send the message to receive a response from the local LLM.
+
+8. Review and Use Responses
+   - For code review, the assistant provides structured feedback.
+   - For modify and build intent, the assistant is prepared to produce code suggestions and build guidance.
+
+9. Save Session Memory
+   - The application stores session history in `workspace/memory/`.
+   - Use the memory API or future frontend actions to save and retrieve sessions.
+
+10. Troubleshooting
+    - If the backend or frontend fails, verify that Python and Node.js are installed.
+    - Check logs under `workspace/logs/`.
+    - Confirm the local LLM endpoint is reachable.
+
+Additional Notes
+----------------
+- The platform is intentionally designed to be local and standalone.
+- Ollama is included as an optional adapter, not a required dependency.
+- The repository scanning and workspace mapping features make it easy to work with copied local modules.
+- The application is extensible, and future enhancements can add advanced patch review, search, and tool execution.
